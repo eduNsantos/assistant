@@ -1,0 +1,33 @@
+services:
+  frontend:
+    image: node:20.18
+    working_dir: /app
+    network_mode: host
+    env_file:
+      - ./frontend/.env
+    volumes:
+      - ./frontend:/app
+
+  backend:
+    image: node:20.18
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env
+    # ports:
+    #   - 3000:3000
+    network_mode: host
+
+  pgsql:
+    image: postgres:15.4
+    env_file:
+      - ./backend/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # Expõe a porta 5432 para conexão externa
+
+volumes:
+  pgdata:
+    driver: local
