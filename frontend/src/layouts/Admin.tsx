@@ -27,12 +27,13 @@ const Admin: React.FC = () => {
   const mainPanel = useRef<HTMLDivElement>(null);
 
   const getRoutes = (routes: RouteProps[]) => {
+    console.log(routes)
     return routes.map((prop: RouteProps, key: number) => {
       if (prop.layout === "/admin") {
         return (
           <Route
             key={key}
-            path={prop.layout + prop.path}
+            path={prop.path}
             element={<prop.component />} // Use 'element' ao invés de 'Component'
           />
         );

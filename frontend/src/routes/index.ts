@@ -56,21 +56,21 @@ const dashboardRoutes: Route[] = [
   {
     path: "/icons",
     name: "Icons",
-    icon: "fas fa-atom",
+    icon: "nc-icon nc-atom",
     component: Icons,
     layout: "/admin"
   },
   {
     path: "/maps",
     name: "Maps",
-    icon: "fas fa-map",
+    icon: "nc-icon nc-pin-3",
     component: Maps,
     layout: "/admin"
   },
   {
     path: "/notifications",
     name: "Notifications",
-    icon: "fa-solid fa-user",
+    icon: "nc-icon nc-bell-55",
     component: Notifications,
     layout: "/admin"
   }
