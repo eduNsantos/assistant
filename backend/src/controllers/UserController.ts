@@ -40,28 +40,38 @@ export default class UserController {
     }
 
     static async store(req: Request, res: Response): Promise<any>  {
-        const body: StoreBody = req.body;
+        try {
+            const body: StoreBody = req.body;
 
-        const { error } = userSchema.validate(body);
+            const { error } = userSchema.validate(body);
 
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            if (error) {
+                return res.status(400).json({ error: error.details[0].message });
+            }
+
+            const user = new User();
+
+            user.name = body.name;
+            user.email = body.email;
+
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+
+            user.password = hashedPassword;
+
+            const result = await user.save({
+                data: body
+            });
+
+            return res.send(result.id);
+        } catch (err) {
+
+            if (err.code === '23505') {
+                return res.status(400).send('USER_MAY_BE_REGISTERED');
+            }
+
+            console.log(err);
+            res.status(400);
         }
-
-        const user = new User();
-
-        user.name = body.name;
-        user.email = body.email;
-
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(body.password, saltRounds);
-
-        user.password = hashedPassword;
-
-        const result = await user.save({
-            data: body
-        });
-
-        return res.send(result.id);
     }
 };
