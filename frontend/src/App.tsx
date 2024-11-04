@@ -8,6 +8,8 @@ import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import Admin from './layouts/Admin'
+import Login from './views/Login';
+import Register from './views/Register';
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/admin/*" Component={(props) => <Admin {...props} />} />
+
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
         </Routes>
         {/* <Redirect from="/" to="/admin/dashboard" /> */}
       </BrowserRouter>
