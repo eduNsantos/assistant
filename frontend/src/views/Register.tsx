@@ -1,5 +1,4 @@
-import React from "react";
-import { Anchor, Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 
 function Register() {
     return (
