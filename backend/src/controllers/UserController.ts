@@ -17,17 +17,18 @@ const userSchema = Joi.object({
         'string.min': 'A senha deve ter pelo menos 6 caracteres',
         'any.required': 'A senha é obrigatória'
     }),
-    confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
+    confirmationPassword: Joi.string().valid(Joi.ref('password')).required().messages({
         'any.only': 'A confirmação da senha deve corresponder à senha',
         'any.required': 'A confirmação da senha é obrigatória'
     })
 });
 
+
 interface StoreBody {
     name: string,
     email: string,
     password: string,
-    confirmPassword: string
+    confirmationPassword: string
 }
 
 export default class UserController {
@@ -43,10 +44,21 @@ export default class UserController {
         try {
             const body: StoreBody = req.body;
 
-            const { error } = userSchema.validate(body);
+
+            const { error } = userSchema.validate(body, {
+                abortEarly: false
+            });
+
+
 
             if (error) {
-                return res.status(400).json({ error: error.details[0].message });
+                let errors = {};
+                error.details.forEach(err => {
+                    console.log
+                    errors[err.path.join('.')] = err.message
+                })
+
+                return res.status(400).json(errors);
             }
 
             const user = new User();
@@ -63,10 +75,12 @@ export default class UserController {
                 data: body
             });
 
-            return res.send(result.id);
+            return res.json({
+                userId: result.id
+            });
         } catch (err) {
 
-            if (err.code === '23505') {
+            if (err.code ===  '23505') {
                 return res.status(400).send('USER_MAY_BE_REGISTERED');
             }
 

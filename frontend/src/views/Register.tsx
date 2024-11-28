@@ -4,6 +4,11 @@ import * as Yup from 'yup';
 import FormikError from "../components/FormikErrors";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import api from "../services/api";
+import { useNavigate } from "react-router";
+import * as toastr from 'toastr';
+import { useEffect } from "react";
+import { AxiosError } from "axios";
 
 const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -31,6 +36,24 @@ interface Values {
 }
 
 function Register() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        let timeout = 1000;
+
+        toastr.success('Você será direcionado para fazer login...', 'Usuário cadastrado!', {
+            timeOut: timeout,
+            progressBar: true
+        });
+
+        setTimeout(() => navigate('/login', {
+            state: {
+                email: 'edu.nascimento22@outlook.com'
+            }
+        }), timeout + 300);
+
+    }, [])
 
     return (
         <Formik
@@ -42,11 +65,29 @@ function Register() {
             }}
             validationSchema={RegisterSchema}
             onSubmit={async (values, { setSubmitting }: FormikHelpers<Values>) => {
-                console.log(values)
-                await new Promise((r) => setTimeout(r, 500));
-                alert(JSON.stringify(values, null, 2));
+                try {
+                    await api.post('/user', JSON.stringify(values));
 
-                setSubmitting(false);
+                    let timeout = 3000;
+
+                    toastr.success('Você será direcionado para fazer login...', 'Usuário cadastrado!', {
+                        timeOut: timeout,
+                        progressBar: true
+                    });
+
+                    setTimeout(() => navigate('/login', {
+                        state: {
+                            email: values.email
+                        }
+                    }), timeout + 300);
+                } catch (err: AxiosError | {}) {
+
+                    console.log(err?.response?.data?.errro);
+
+                    console.log(err);
+                } finally {
+                    setSubmitting(false);
+                }
             }}
         >
             {({isSubmitting, isValid}) => (
