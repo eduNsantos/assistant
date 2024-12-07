@@ -1,10 +1,13 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import routes from "../../routes";
+import { removeToken } from "../../utils/token";
+import { ToastrSuccess } from "../../utils/toastr";
 
 const Header: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const mobileSidebarToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,6 +29,21 @@ const Header: React.FC = () => {
     }
     return "Brand";
   };
+
+  async function handleLogout () {
+    removeToken();
+
+    await ToastrSuccess({
+      body: 'Logout efetuado!',
+      options: {
+        timeOut: 2000,
+        tapToDismiss: false,
+        closeOnHover: false
+      }
+    })
+
+    navigate('/login');
+  }
 
   return (
     <Navbar bg="light" expand="lg">
@@ -149,8 +167,10 @@ const Header: React.FC = () => {
             <Nav.Item>
               <Nav.Link
                 className="m-0"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>

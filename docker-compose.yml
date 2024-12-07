@@ -16,6 +16,9 @@ services:
       - ./backend:/app
     env_file:
       - ./backend/.env
+    depends_on:
+      - redis
+      - pgsql
     # ports:
     #   - 3000:3000
     network_mode: host
@@ -27,8 +30,27 @@ services:
       - ./backend/.env
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - internal_network
     ports:
       - "5432:5432"  # Expõe a porta 5432 para conexão externa
+
+  redis:
+    image: redis:7.0
+    restart: always
+    command: ["redis-server", "--requirepass", "123123123"]
+    networks:
+      - internal_network
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=123123123 # Configurações do Redis para o backend
+
+networks:
+  internal_network:
+    driver: bridge
 
 volumes:
   pgdata:

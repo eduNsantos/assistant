@@ -10,17 +10,20 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Admin from './layouts/Admin'
 import Login from './views/Login';
 import Register from './views/Register';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/admin/*" Component={(props) => <Admin {...props} />} />
+        <AuthProvider>
+          <Routes>
+            <Route path="/admin/*" Component={(props) => <Admin  {...props} />} />
 
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-        </Routes>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+          </Routes>
+        </AuthProvider>
         {/* <Redirect from="/" to="/admin/dashboard" /> */}
       </BrowserRouter>
     </>

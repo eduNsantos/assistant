@@ -9,6 +9,8 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import routes from "../routes";
 
 import sidebarImage from "../assets/img/sidebar-3.jpg";
+import Can from "../components/Can";
+import { useAuth } from "../contexts/AuthContext";
 
 interface RouteProps {
   layout: string;
@@ -26,18 +28,32 @@ const Admin: React.FC = () => {
   const location = useLocation();
   const mainPanel = useRef<HTMLDivElement>(null);
 
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
+
+
   const getRoutes = (routes: RouteProps[]) => {
-    console.log(routes)
     return routes.map((prop: RouteProps, key: number) => {
+
       if (prop.layout === "/admin") {
         return (
           <Route
             key={key}
             path={prop.path}
-            element={<prop.component />} // Use 'element' ao invés de 'Component'
+            element={(
+
+              <Can key={key} user={user} path={prop.path}>
+                <prop.component />
+              </Can>
+            )} // Use 'element' ao invés de 'Component'
           />
+
         );
       }
+
       return null;
     });
   };

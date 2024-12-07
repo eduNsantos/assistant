@@ -1,13 +1,13 @@
 import { Field, Formik, Form as FormikForm } from "formik";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { Anchor, Button, Container, Form } from "react-bootstrap";
+import { useLayoutEffect, useState } from "react";
+import { Anchor, Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router";
 import * as Yup from 'yup'
 import FormikError from "../components/FormikErrors";
 import api from "../services/api";
-import { saveToken } from "../utils/token";
 import { AxiosError } from "axios";
-import * as toastr from 'toastr';
+import { ToastrError, ToastrSuccess } from "../utils/toastr";
+import { useAuthStore } from "../store/authStore";
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -27,9 +27,10 @@ function Login() {
     const navigate = useNavigate();
     let { state } = useLocation();
 
+    const { setToken } = useAuthStore();
+
 
     useLayoutEffect(() => {
-
         if (!!state?.email) {
             console.log(state.email)
             setInitialValues((prev) => ({
@@ -40,7 +41,6 @@ function Login() {
             navigate('.', { replace: true, state: {} });
         }
     }, [state]);
-;
 
     return (
         <Formik
@@ -59,26 +59,26 @@ function Login() {
                     const { data } = await api.post<Response>('/auth/login', JSON.stringify(values));
 
                     if (data?.token) {
-                        saveToken(data?.token);
+                        setToken(data?.token)
                     }
 
-                    toastr.success('Login autorizado!', 'Direcionando você para o acesso restrito....', {
-                        timeOut: 2500,
-                        progressBar: true
+                    await ToastrSuccess({
+                        title: 'Login autorizado!',
+                        body: 'Direcionando você para o acesso restrito....'
                     });
 
-                    setTimeout(() => {
-
-                        navigate('/admin/dashboard');
-                    }, 2800);
-
+                    navigate('/admin/dashboard');
                 } catch (err: AxiosError | {}) {
                     if (err?.response?.data?.error) {
                         const data: Error = err.response.data;
 
-                        toastr.error(data.error, 'Atenção!', {
-                            progressBar: true,
-                            timeOut: 4000
+                        ToastrError({
+                            body: data.error,
+                            title: 'Atenção!',
+                            options: {
+                                progressBar: true,
+                                timeOut: 4000
+                            }
                         })
                     }
                 } finally {
