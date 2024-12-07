@@ -3,6 +3,7 @@ import { useLocation, NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import logo from "../../assets/img/reactlogo.png";
 import '@fortawesome/fontawesome-free/css/all.css';
+import { useAuthStore } from "../../store/authStore";
 
 interface Route {
   path: string;
@@ -26,6 +27,8 @@ const Sidebar: React.FC<SidebarProps> = ({ color, image, routes }) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
 
+  const { user } = useAuthStore();
+
   return (
     <div className="sidebar" data-image={image} data-color={color}>
       <div
@@ -46,7 +49,11 @@ const Sidebar: React.FC<SidebarProps> = ({ color, image, routes }) => {
           </a>
           <a className="simple-text" href="http://www.creative-tim.com">
             Creative Tim
-          </a>
+          </a><br/>
+        </div>
+        <div>
+
+          <span>Bem vindo, {user?.name}!</span>
         </div>
         <Nav>
           {routes.map((prop, key) => {

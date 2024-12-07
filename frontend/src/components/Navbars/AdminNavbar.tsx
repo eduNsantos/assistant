@@ -2,12 +2,14 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import routes from "../../routes";
-import { removeToken } from "../../utils/token";
 import { ToastrSuccess } from "../../utils/toastr";
+import { useAuthStore } from "../../store/authStore";
 
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { setToken, setUser } = useAuthStore();
 
   const mobileSidebarToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -31,12 +33,13 @@ const Header: React.FC = () => {
   };
 
   async function handleLogout () {
-    removeToken();
+    setToken(null);
+    setUser(null);
 
     await ToastrSuccess({
-      body: 'Logout efetuado!',
+      body: 'Logout efetivado!',
       options: {
-        timeOut: 2000,
+        timeOut: 1000,
         tapToDismiss: false,
         closeOnHover: false
       }

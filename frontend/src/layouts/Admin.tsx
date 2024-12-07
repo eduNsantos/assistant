@@ -30,10 +30,6 @@ const Admin: React.FC = () => {
 
   const { user } = useAuthStore();
 
-  useEffect(() => {
-    console.log(user)
-  }, [user]);
-
 
   const getRoutes = (routes: RouteProps[]) => {
     return routes.map((prop: RouteProps, key: number) => {

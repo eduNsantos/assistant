@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import { ToastrError, ToastrSuccess } from "../utils/toastr";
 import { useAuthStore } from "../store/authStore";
 import { tokenInfo } from "../utils/token";
+import { options } from "toastr";
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -66,7 +67,10 @@ function Login() {
 
                     await ToastrSuccess({
                         title: 'Login autorizado!',
-                        body: 'Direcionando você para o acesso restrito....'
+                        body: 'Direcionando você para o acesso restrito....',
+                        options: {
+                            timeOut: 1000
+                        }
                     });
 
                     navigate('/admin/dashboard');

@@ -1,26 +1,28 @@
-import { NextFunction, Request, Response } from "express";
+import { IRouterMatcher, NextFunction, Request, Response } from "express";
 
 import jwt from 'jsonwebtoken';
 
 interface User {
-    sub: string,
+    id: number,
     iat: number,
     expiresAt: number,
     audience: string,
     issuer: string
 }
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
     user: User
 }
 
-export default function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export default function isAuthenticated(req: AuthenticatedRequest, res: Response, next: NextFunction): void  {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ message: "Token não fornecido" });
+        res.status(401).json({ message: "Token não fornecido" });
+        return;
     }
+
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET, {
             audience: process.env.JWT_AUDIENCE,
@@ -31,6 +33,7 @@ export default function authenticateToken(req: AuthenticatedRequest, res: Respon
 
         next();
     } catch (err) {
-        return res.status(403).json({ message: "Token inválido ou expirado" });
+        console.log(err);
+        res.status(403).json({ message: "Token inválido ou expirado" });
     }
 }

@@ -33,8 +33,8 @@ const dashboardRoutes: Route[] = [
     layout: "/admin"
   },
   {
-    path: "/user",
-    name: "User Profile",
+    path: "/profile",
+    name: "Perfil",
     icon: "nc-icon nc-circle-09",
     component: UserProfile,
     layout: "/admin"

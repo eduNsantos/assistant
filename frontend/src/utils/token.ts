@@ -9,10 +9,6 @@ interface User {
 }
 
 
-export const removeToken = () => {
-    localStorage.removeItem("authToken");
-};
-
 export const tokenInfo = (token: string) => {
     console.log(token);
     console.log('pog')
