@@ -1,13 +1,8 @@
 import Dashboard from "../views/Dashboard";
 import UserProfile from "../views/UserProfile";
 import TableList from "../views/TableList";
-import Typography from "../views/Typography";
-import Icons from "../views/Icons";
-import Maps from "../views/Maps";
-import Notifications from "../views/Notifications";
-import Upgrade from "../views/Upgrade";
 
-interface Route {
+export interface Route {
   upgrade?: boolean;
   path: string;
   name: string;
@@ -17,14 +12,6 @@ interface Route {
 }
 
 const dashboardRoutes: Route[] = [
-  {
-    upgrade: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "nc-icon nc-alien-33",
-    component: Upgrade,
-    layout: "/admin"
-  },
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -40,38 +27,10 @@ const dashboardRoutes: Route[] = [
     layout: "/admin"
   },
   {
-    path: "/table",
-    name: "Table List",
+    path: "/chatbots",
+    name: "Chabots",
     icon: "nc-icon nc-notes",
     component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-paper-2",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-atom",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "nc-icon nc-pin-3",
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "nc-icon nc-bell-55",
-    component: Notifications,
     layout: "/admin"
   }
 ];

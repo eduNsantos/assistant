@@ -16,7 +16,7 @@ interface Props {
 }
 
 const permissions: Record<string, string[]> = {
-    user: ["/dashboard", "/profile", "/trainings"]
+    user: ["/dashboard", "/profile", "/chatbots"]
 };
 
 const Can: React.FC<Props> = ({ path, ifNo, children }) => {

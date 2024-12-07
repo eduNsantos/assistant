@@ -10,16 +10,8 @@ import routes from "../routes";
 
 import sidebarImage from "../assets/img/sidebar-3.jpg";
 import Can from "../components/Can";
-import { useAuthStore } from "../store/authStore";
 
-interface RouteProps {
-  layout: string;
-  path: string;
-  component: React.FC<any>; // Ajuste o tipo conforme necessário
-  upgrade?: boolean;
-  icon?: string;
-  name?: string;
-}
+import { Route as CustomRoute} from '../routes/index';
 
 const Admin: React.FC = () => {
   const [image, setImage] = React.useState<string>(sidebarImage);
@@ -28,11 +20,9 @@ const Admin: React.FC = () => {
   const location = useLocation();
   const mainPanel = useRef<HTMLDivElement>(null);
 
-  const { user } = useAuthStore();
 
-
-  const getRoutes = (routes: RouteProps[]) => {
-    return routes.map((prop: RouteProps, key: number) => {
+  const getRoutes = (routes: CustomRoute[]) => {
+    return routes.map((prop: CustomRoute, key: number) => {
 
       if (prop.layout === "/admin") {
         return (
@@ -44,7 +34,7 @@ const Admin: React.FC = () => {
               <Can key={key} path={prop.path}>
                 <prop.component />
               </Can>
-            )} // Use 'element' ao invés de 'Component'
+            )}
           />
 
         );
