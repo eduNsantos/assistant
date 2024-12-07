@@ -8,6 +8,7 @@ import api from "../services/api";
 import { AxiosError } from "axios";
 import { ToastrError, ToastrSuccess } from "../utils/toastr";
 import { useAuthStore } from "../store/authStore";
+import { tokenInfo } from "../utils/token";
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -27,7 +28,7 @@ function Login() {
     const navigate = useNavigate();
     let { state } = useLocation();
 
-    const { setToken } = useAuthStore();
+    const { setToken, setUser } = useAuthStore();
 
 
     useLayoutEffect(() => {
@@ -60,6 +61,7 @@ function Login() {
 
                     if (data?.token) {
                         setToken(data?.token)
+                        setUser(tokenInfo(data.token) as any);
                     }
 
                     await ToastrSuccess({

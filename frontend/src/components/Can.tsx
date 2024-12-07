@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import { useAuth } from "../contexts/AuthContext";
 
 interface User {
     id: string,
@@ -21,12 +20,15 @@ const permissions: Record<string, string[]> = {
 };
 
 const Can: React.FC<Props> = ({ path, ifNo, children }) => {
-    const { token } = useAuthStore();
-    // if (!user) {
-    //     return <Navigate to="/login" />;
-    // }
+    const { user } = useAuthStore();
+
+    console.log(user);
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
     // Verifica se o usuário tem permissão para acessar o caminho
-    const hasAccess = permissions[user.role]?.includes(path);
+    const hasAccess = permissions[user?.role]?.includes(path);
 
     if (!hasAccess) {
         return ifNo ? <>{ifNo}</> : <Navigate to="/login" />;

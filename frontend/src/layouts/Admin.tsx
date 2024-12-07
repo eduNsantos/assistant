@@ -10,7 +10,7 @@ import routes from "../routes";
 
 import sidebarImage from "../assets/img/sidebar-3.jpg";
 import Can from "../components/Can";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuthStore } from "../store/authStore";
 
 interface RouteProps {
   layout: string;
@@ -28,7 +28,7 @@ const Admin: React.FC = () => {
   const location = useLocation();
   const mainPanel = useRef<HTMLDivElement>(null);
 
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     console.log(user)
@@ -45,7 +45,7 @@ const Admin: React.FC = () => {
             path={prop.path}
             element={(
 
-              <Can key={key} user={user} path={prop.path}>
+              <Can key={key} path={prop.path}>
                 <prop.component />
               </Can>
             )} // Use 'element' ao invés de 'Component'
