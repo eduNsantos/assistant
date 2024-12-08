@@ -11,4 +11,6 @@ router.post('/', isAuthenticated, ChatbotController.store);
 
 router.get('/:chatbotId', isAuthenticated, ChatbotController.show);
 
+router.put('/:chatbotId', isAuthenticated, ChatbotController.update);
+
 export default router;

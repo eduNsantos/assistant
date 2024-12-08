@@ -6,6 +6,7 @@ import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { ListChatBots } from "../services/ChatbotServices/ListChatBots";
 import { CreateChatBot } from "../services/ChatbotServices/CreateChatBot";
 import { ShowChatbot, ShowChatbotParams } from "../services/ChatbotServices/ShowChatbot";
+import { UpdateChatbot } from "../services/ChatbotServices/UpdateChatbot";
 
 const userStoreSchema = Joi.object({
     name: Joi.string().min(1).required().messages({
@@ -53,91 +54,11 @@ export default class ChatbotController {
         res.json(chatbot);
     }
 
-    // static async store(req: Request, res: Response): Promise<any>  {
-    //     try {
-    //         const body: StoreBody = req.body;
+    static async update(req: AuthenticatedRequest, res: Response): Promise<any>  {
+        const body: UpdateChatbot = req.body;
 
+        const newChatbot = await UpdateChatbot(body, req.user.id)
 
-    //         const { error } = userStoreSchema.validate(body, {
-    //             abortEarly: false
-    //         });
-
-
-
-    //         if (error) {
-    //             let errors = {};
-    //             error.details.forEach(err => {
-    //                 console.log
-    //                 errors[err.path.join('.')] = err.message
-    //             })
-
-    //             return res.status(400).json(errors);
-    //         }
-
-    //         const user = new User();
-
-    //         user.name = body.name;
-    //         user.email = body.email;
-
-    //         const saltRounds = 10;
-    //         const hashedPassword = await bcrypt.hash(body.password, saltRounds);
-
-    //         user.password = hashedPassword;
-
-    //         const result = await user.save({
-    //             data: body
-    //         });
-
-    //         return res.json({
-    //             userId: result.id
-    //         });
-    //     } catch (err) {
-
-    //         if (err.code ===  '23505') {
-    //             return res.status(400).send('USER_MAY_BE_REGISTERED');
-    //         }
-
-    //         console.log(err);
-    //         res.status(400);
-    //     }
-    // }
-
-    // static async update(req: AuthenticatedRequest, res: Response): Promise<any>  {
-    //     try {
-    //         const body: UpdateBody = req.body;
-
-
-    //         const { error } = userUpdateSchema.validate(body);
-
-    //         if (error) {
-    //             res.status(400).json({
-    //                 error: error.details[0].message
-    //             });
-    //             return;
-    //         }
-
-    //         const user = new User();
-
-    //         user.name = body.name;
-
-    //         if (!!body.password) {
-    //             const saltRounds = 10;
-    //             const hashedPassword = await bcrypt.hash(body.password, saltRounds);
-
-    //             user.password = hashedPassword;
-    //         }
-
-    //         const result = await User.getRepository().update({
-    //             id: req.user.id,
-    //         }, user)
-
-    //         res.status(200) .send('ok');
-
-    //         return;
-    //     } catch (err) {
-
-    //         console.log(err);
-    //         res.status(400);
-    //     }
-    // }
+        res.send(newChatbot);
+    }
 };

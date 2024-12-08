@@ -30,8 +30,6 @@ function Chatbots() {
 
             const fetchedChatbots = response.data
 
-            console.log(fetchChatbots);
-
             setChatbots(fetchedChatbots);
         }
 
@@ -44,26 +42,59 @@ function Chatbots() {
 
     function handleCloseForm() {
         setOpenChatBotForm(false);
+        setEditChatbotId(undefined);
     }
 
-    async function handleCreateBot(values: Partial<Chatbot>, helpers: FormikHelpers<Chatbot>): Promise<void> {
+    useEffect(() => {
+        console.log(chatbots);
+    }, [chatbots])
+
+    async function handleChatBotSubmit(values: Partial<Chatbot>, helpers: FormikHelpers<Chatbot>): Promise<void> {
 
         const { setSubmitting, resetForm }  = helpers;
 
 
         setSubmitting(true);
 
-        const { data } = await api.post<Chatbot>('/chatbots', values);
+        let data: Chatbot;
 
-        ToastrSuccess({
-            body: 'Chatbot criado com sucesso!'
-        });
 
-        handleCloseForm();
+        if (!editChatbotId) {
+            let response = await api.post<Chatbot>('/chatbots', values)
+            data = response.data;
 
-        resetForm();
+            setChatbots([...chatbots, data]);
 
-        setChatbots([...chatbots, data]);
+            ToastrSuccess({
+                body: 'Chatbot criado com sucesso!'
+            });
+            handleCloseForm();
+
+            resetForm();
+        } else {
+            let response = await api.put<Chatbot>(`/chatbots/${editChatbotId}`, values)
+
+            ToastrSuccess({
+                body: 'Chatbot Alterado!'
+            });
+
+            data = response.data;
+
+
+            const newValues = [...chatbots];
+            for (let i = 0; i < chatbots.length; i++) {
+                let chatbot = chatbots[i];
+
+                if (data.id === chatbot.id) {
+                    newValues[i] = data;
+
+                    setChatbots(newValues)
+                    break;
+                }
+            }
+
+        }
+
 
         setSubmitting(false);
     }
@@ -93,7 +124,7 @@ function Chatbots() {
                             </Card.Header>
                             <Card.Body>
                                 {openChatBotForm
-                                    ? <ChatbotForm chatbotId={editChatbotId} onSubmit={handleCreateBot} closeForm={handleCloseForm}/>
+                                    ? <ChatbotForm chatbotId={editChatbotId} onSubmit={handleChatBotSubmit} closeForm={handleCloseForm}/>
                                     : !chatbots ? 'Carregando....' : <ListChatbots onClickEditChatbot={onClickEditChatbot} onClickNewChatBot={handleNewChatbotClick} chatbots={chatbots}/>
                                 }
 

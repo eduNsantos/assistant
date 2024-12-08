@@ -42,7 +42,7 @@ export default function ListChatbots({
                             </Button>
                     </div>
                         <div className="border-top pt-2">
-                            <small className="text-muted">{chatbot.behavior}</small>
+                            <small className="text-muted">{chatbot.behavior.slice(0, 300)}{chatbot.behavior.length > 300 ? '...' : ''}</small>
                         </div>
                     </div>
                 )

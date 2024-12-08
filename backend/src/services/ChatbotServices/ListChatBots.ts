@@ -7,8 +7,7 @@ export async function ListChatBots(userId: number): Promise<Chatbot[]> {
     const chatbots = await repository.find({
         where: {
             userId
-        },
-        select: ['id', 'name', 'behavior']
+        }
     });
 
     return chatbots;

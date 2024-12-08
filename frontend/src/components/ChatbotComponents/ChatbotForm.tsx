@@ -61,7 +61,7 @@ export default function ChatbotForm({
                 enableReinitialize={true}
             >
 
-                {({isSubmitting, isValid}) => (
+                {({isSubmitting, isValid, values}) => (
                     <FormikForm className="my-5">
                         <Row>
                             <Form.Group>
@@ -84,6 +84,8 @@ export default function ChatbotForm({
                                     style={{ height: '150px' }}
                                 />
                             </Form.Group>
+                            <br/>
+                            <small className="my-2 text-muted">{values.behavior.length} caracteres</small>
                         </Row>
                         <Row className="mt-2">
                             <Form.Group>
