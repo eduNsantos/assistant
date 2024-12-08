@@ -4,6 +4,8 @@ import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 import { ListChatBots } from "../services/ChatbotServices/ListChatBots";
+import { CreateChatBot } from "../services/ChatbotServices/CreateChatBot";
+import { ShowChatbot, ShowChatbotParams } from "../services/ChatbotServices/ShowChatbot";
 
 const userStoreSchema = Joi.object({
     name: Joi.string().min(1).required().messages({
@@ -29,16 +31,26 @@ const userStoreSchema = Joi.object({
 
 export default class ChatbotController {
     static async index(req: AuthenticatedRequest, res: Response)  {
-        const chatbots = ListChatBots(req.user.id);
+        const chatbots = await ListChatBots(req.user.id);
 
         res.json(chatbots);
     }
 
 
     static async store(req: AuthenticatedRequest, res: Response)  {
-        const chatbots = ListChatBots(req.user.id);
+        const data: CreateChatBot = req.body;
 
-        res.json(chatbots);
+        const chatbot = await CreateChatBot(data, req.user.id);
+
+        res.json(chatbot);
+    }
+
+    static async show(req: AuthenticatedRequest, res: Response)  {
+        const chatbotId: any = req.params.chatbotId;
+
+        const chatbot = await ShowChatbot(chatbotId, req.user.id);
+
+        res.json(chatbot);
     }
 
     // static async store(req: Request, res: Response): Promise<any>  {

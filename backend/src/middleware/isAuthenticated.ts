@@ -34,9 +34,10 @@ export default async function isAuthenticated(req: AuthenticatedRequest, res: Re
 
         const redis = getRedisClient();
 
-        const refreshToken = await redis.get(`refreshToken:2`)
+        const refreshToken = await redis.get(`refreshToken:66`)
 
-        console.log(refreshToken + ' ' + `refreshToken:${decoded.id}`);
+        // TODO: Validar se refresh token está ativo
+        // console.log(refreshToken + ' ' + `refreshToken:${decoded.id}`);
         // if (refreshToken = jwt)
 
         next();

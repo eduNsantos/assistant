@@ -18,7 +18,8 @@ const Header: React.FC = () => {
     const node = document.createElement("div");
     node.id = "bodyClick";
     node.onclick = function () {
-      this.parentElement?.removeChild(this);
+      const el = (this as HTMLDivElement);
+      el.parentElement?.removeChild(el);
       document.documentElement.classList.toggle("nav-open");
     };
     document.body.appendChild(node);
