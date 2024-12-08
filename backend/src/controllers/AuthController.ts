@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 
 import jwt from 'jsonwebtoken';
 import { getRedisClient } from "../utils/redisClient";
+import { AuthenticatedRequest } from "../middleware/isAuthenticated";
 
 interface LoginBody {
     email: string,
@@ -107,9 +108,8 @@ export default class AuthController {
         const refreshToken = await AuthController.generateRefreshToken(user.id);
 
 
-        // console.log(refreshToken)
 
-        client.set(`refreshToken:${user.id}`, refreshToken); // Expira em 30 dias
+        await client.set(`refreshToken:${user.id}`, refreshToken); // Expira em 30 dias
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
@@ -155,4 +155,11 @@ export default class AuthController {
         });
     }
 
+    static async logout(req: AuthenticatedRequest, res: Response): Promise<void> {
+        const redis = getRedisClient();
+
+        await redis.del(`refreshToken:${req.user.id}`)
+
+        res.status(200).send('ok');
+    }
 };

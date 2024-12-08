@@ -1,6 +1,7 @@
 import { IRouterMatcher, NextFunction, Request, Response } from "express";
 
 import jwt from 'jsonwebtoken';
+import { getRedisClient } from "../utils/redisClient";
 
 interface User {
     id: number,
@@ -14,7 +15,7 @@ export interface AuthenticatedRequest extends Request {
     user: User
 }
 
-export default function isAuthenticated(req: AuthenticatedRequest, res: Response, next: NextFunction): void  {
+export default async function isAuthenticated(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void>  {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -30,6 +31,13 @@ export default function isAuthenticated(req: AuthenticatedRequest, res: Response
         }) as User;
 
         req.user = decoded;
+
+        const redis = getRedisClient();
+
+        const refreshToken = await redis.get(`refreshToken:2`)
+
+        console.log(refreshToken + ' ' + `refreshToken:${decoded.id}`);
+        // if (refreshToken = jwt)
 
         next();
     } catch (err) {

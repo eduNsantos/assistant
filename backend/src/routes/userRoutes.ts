@@ -6,7 +6,6 @@ const router = Router();
 
 router.get('/', UserController.index);
 
-router.post('/', UserController.store);
 router.put('/', UserController.update);
 
 // Rota para obter um usuário específico

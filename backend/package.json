@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "nodemon -r dotenv/config --exec ts-node ./src/server.ts"
+    "dev": "nodemon -r dotenv/config --exec ts-node ./src/server.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@types/express": "^5.0.0",

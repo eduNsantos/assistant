@@ -4,6 +4,7 @@ import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import routes from "../../routes";
 import { ToastrSuccess } from "../../utils/toastr";
 import { useAuthStore } from "../../store/authStore";
+import api from "../../services/api";
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -33,13 +34,16 @@ const Header: React.FC = () => {
   };
 
   async function handleLogout () {
+
+    await api.post('auth/logout');
+
     setToken(null);
     setUser(null);
 
     await ToastrSuccess({
       body: 'Logout efetivado!',
       options: {
-        timeOut: 1000,
+        timeOut: 2000,
         tapToDismiss: false,
         closeOnHover: false
       }

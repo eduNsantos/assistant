@@ -69,7 +69,7 @@ function Login() {
                         title: 'Login autorizado!',
                         body: 'Direcionando você para o acesso restrito....',
                         options: {
-                            timeOut: 1000
+                            timeOut: 2000
                         }
                     });
 

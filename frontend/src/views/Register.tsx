@@ -38,23 +38,6 @@ interface Values {
 function Register() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-
-        let timeout = 1000;
-
-        toastr.success('Você será direcionado para fazer login...', 'Usuário cadastrado!', {
-            timeOut: timeout,
-            progressBar: true
-        });
-
-        setTimeout(() => navigate('/login', {
-            state: {
-                email: 'edu.nascimento22@outlook.com'
-            }
-        }), timeout + 300);
-
-    }, [])
-
     return (
         <Formik
             initialValues={{
@@ -66,7 +49,7 @@ function Register() {
             validationSchema={RegisterSchema}
             onSubmit={async (values, { setSubmitting }: FormikHelpers<Values>) => {
                 try {
-                    await api.post('/user', JSON.stringify(values));
+                    await api.post('/auth/register', JSON.stringify(values));
 
                     let timeout = 3000;
 
