@@ -1,6 +1,7 @@
 import Dashboard from "../views/Dashboard";
 import UserProfile from "../views/UserProfile";
 import TableList from "../views/TableList";
+import Chatbots from "../views/Chatbots";
 
 export interface Route {
   upgrade?: boolean;
@@ -30,7 +31,7 @@ const dashboardRoutes: Route[] = [
     path: "/chatbots",
     name: "Chabots",
     icon: "nc-icon nc-notes",
-    component: TableList,
+    component: Chatbots,
     layout: "/admin"
   }
 ];

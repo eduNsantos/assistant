@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { DefaultEntity } from './DefaultEntity';
+import { Chatbot } from './ChatbotEntity';
 
 @Entity("Users") // Nome da tabela no banco de dados
 export class User extends DefaultEntity {
@@ -16,6 +17,8 @@ export class User extends DefaultEntity {
     password: string;
 
 
+    @OneToMany(() => Chatbot, (chatbot) => chatbot.user)
+    chatbots: Chatbot[];
     // constructor(id: number, name: string, email: string, password: string) {
     //     super();
     // };

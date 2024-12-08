@@ -9,7 +9,6 @@ import { AxiosError } from "axios";
 import { ToastrError, ToastrSuccess } from "../utils/toastr";
 import { useAuthStore } from "../store/authStore";
 import { tokenInfo } from "../utils/token";
-import { options } from "toastr";
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()

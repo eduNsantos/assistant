@@ -1,17 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
 import { DefaultEntity } from './DefaultEntity';
+import { User } from './UserEntity';
 
-@Entity("Chatbots") // Nome da tabela no banco de dados
-export class User extends DefaultEntity {
-    @PrimaryGeneratedColumn() // Gera automaticamente a coluna ID
+@Entity("Chatbots")
+export class Chatbot extends DefaultEntity {
+    @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'varchar', length: 255, nullable: false }) // Define a coluna 'name' como varchar
+    @Column({ type: 'varchar', length: 255, nullable: false })
     name: string;
 
-    @Column({ type: 'text', unique: true, nullable: false }) // 'email' deve ser único
+    @Column({ type: 'text', nullable: false })
     behavior: string;
 
+    @Column({ type: 'int', nullable: false }) // 'email' deve ser único
+    userId: number;
+
+
+
+    @ManyToOne(() => User, (user) => user.chatbots)
+    @JoinColumn({ name: 'userId' }) // Liga o campo userId à tabela Users
+    user: User;
 
 
     // constructor(id: number, name: string, email: string, password: string) {

@@ -7,7 +7,6 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import api from "../services/api";
 import { useNavigate } from "react-router";
 import * as toastr from 'toastr';
-import { useEffect } from "react";
 import { AxiosError } from "axios";
 
 const RegisterSchema = Yup.object().shape({

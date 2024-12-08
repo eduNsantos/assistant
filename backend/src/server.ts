@@ -3,6 +3,7 @@ import cors from 'cors';
 import '../typeorm.config';
 import userRoutes from './routes/userRoutes'; // Importando as rotas
 import authRoutes from './routes/authRoutes'; // Importando as rotas
+import chatbotRoutes from './routes/chatbotRoutes'; // Importando as rotas
 import { connectRedis } from './utils/redisClient';
 import isAuthenticated from './middleware/isAuthenticated';
 
@@ -13,8 +14,9 @@ app.use(cors());
 
 
 // Usando as
-app.use('/api/user', isAuthenticated, userRoutes); // Prefixando as rotas com '/api'
-app.use('/api/auth', authRoutes); // Prefixando as rotas com '/api'
+app.use('/api/user', isAuthenticated, userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/chatbots', chatbotRoutes);
 
 const PORT = 4000;
 app.listen(PORT, async () => {

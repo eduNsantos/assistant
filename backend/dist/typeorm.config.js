@@ -45,14 +45,16 @@ exports.AppDataSource = new typeorm_1.DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: false,
-    logging: true,
+    // logging: true,
+    // Rodar migration no dist
     entities: ["dist/src/entity/**/*.js"],
     migrations: ["dist/src/migrations/**/*.js"],
+    // entities: ["src/entity/**/*.ts"],
+    // migrations: ["src/migrations/**/*.ts"],
 });
 exports.AppDataSource.initialize()
     .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Data Source inicializado");
-    console.log(yield exports.AppDataSource.query('SELECT * FROM migrations'));
+    // console.log("Data Source inicializado")
 }))
     .catch((err) => console.error("Erro ao inicializar Data Source", err));
 // export default AppDataSource;

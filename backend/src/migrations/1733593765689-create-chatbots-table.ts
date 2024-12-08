@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
 export class CreateChatbotsTable1733593765689 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
@@ -23,6 +23,12 @@ export class CreateChatbotsTable1733593765689 implements MigrationInterface {
                     isNullable: false
                 },
                 {
+                    name: 'userId',
+                    type: 'int',
+                    isNullable: false,
+
+                },
+                {
                     name: 'createdAt',
                     type: 'timestamp',
                     default: 'CURRENT_TIMESTAMP'
@@ -35,9 +41,30 @@ export class CreateChatbotsTable1733593765689 implements MigrationInterface {
                 }
             ]
         }));
+
+        await queryRunner.createForeignKey(
+            'Chatbots',
+            new TableForeignKey({
+                columnNames: ['userId'], // Coluna na tabela atual
+                referencedTableName: 'Users', // Tabela referenciada
+                referencedColumnNames: ['id'], // Coluna referenciada
+            })
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable('Chatbots');
+
+        const table = await queryRunner.getTable('Chatbots');
+        const foreignKey = table?.foreignKeys.find(
+            (fk) => fk.columnNames.indexOf('userId') !== -1
+        );
+
+        if (foreignKey) {
+            await queryRunner.dropForeignKey('Chatbots', foreignKey);
+        }
+
+        // Remover a tabela
         await queryRunner.dropTable('Chatbots');
     }
 }

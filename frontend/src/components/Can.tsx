@@ -16,13 +16,11 @@ interface Props {
 }
 
 const permissions: Record<string, string[]> = {
-    user: ["/dashboard", "/profile", "/chatbots"]
+    user: ["/dashboard", "/profile", "/chatbots", "/chatbots/new"]
 };
 
 const Can: React.FC<Props> = ({ path, ifNo, children }) => {
     const { user } = useAuthStore();
-
-    console.log(user);
 
     if (!user) {
         return <Navigate to="/login" />;
