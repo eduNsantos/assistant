@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Chatbot } from "../../views/Chatbots";
+import { Whatsapp } from "../../views/Whatsapps";
 import { Button, Form, Row } from "react-bootstrap";
 import { Form as FormikForm, Field, Formik, FormikHelpers } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import api from "../../services/api";
 
-interface ChatbotFormInterface {
-    chatbotId?: number,
+interface WhatsappFormInterface {
+    whatsappId?: number,
     closeForm: () => void,
-    onSubmit: (values: Partial<Chatbot>, helpers: FormikHelpers<any>) => Promise<void>
+    onSubmit: (values: Partial<Whatsapp>, helpers: FormikHelpers<any>) => Promise<void>
 }
 
 
-interface ChatbotValues {
+interface WhatsappValues {
     id?: number,
     name: string,
     behavior: string
 }
 
-export default function ChatbotForm({
-    chatbotId,
+export default function WhatsappForm({
+    whatsappId,
     closeForm,
     onSubmit
-}: ChatbotFormInterface): React.ReactNode {
+}: WhatsappFormInterface): React.ReactNode {
 
-    const [chatbot, setChatbot] = useState<Chatbot>({
+    const [whatsapp, setWhatsapp] = useState<Whatsapp>({
         id: undefined,
         name: "",
         behavior: "",
@@ -33,17 +33,17 @@ export default function ChatbotForm({
 
 
     useEffect(() => {
-        async function fetchChatbot() {
+        async function fetchWhatsapp() {
 
-            if (!!chatbotId) {
-                const { data } = await api.get<ChatbotValues>(`chatbots/${chatbotId}`)
+            if (!!whatsappId) {
+                const { data } = await api.get<WhatsappValues>(`whatsapps/${whatsappId}`)
 
-                setChatbot(data);
+                setWhatsapp(data);
             }
         }
 
-        fetchChatbot();
-    }, [chatbotId])
+        fetchWhatsapp();
+    }, [whatsappId])
 
     return (
         <>
@@ -52,11 +52,11 @@ export default function ChatbotForm({
                     <FontAwesomeIcon icon={faArrowLeft}/>
                 </Button>
 
-                {chatbotId ? <span>Editando informações do chatbot <b>{chatbot.name}</b></span> : <>Cadastrar novo chatbot</>}
+                {whatsappId ? <span>Editando informações do whatsapp <b>{whatsapp.name}</b></span> : <>Cadastrar novo whatsapp</>}
             </div>
 
             <Formik
-                initialValues={chatbot}
+                initialValues={whatsapp}
                 onSubmit={onSubmit}
                 enableReinitialize={true}
             >
@@ -65,7 +65,7 @@ export default function ChatbotForm({
                     <FormikForm className="my-3">
                         <Row>
                             <Form.Group>
-                                <Form.Label>Nome do Chatbot</Form.Label>
+                                <Form.Label>Nome do Whatsapp</Form.Label>
                                 <Field
                                     as={Form.Control}
                                     name="name"
@@ -75,7 +75,7 @@ export default function ChatbotForm({
                         </Row>
                         <Row className="mt-2">
                             <Form.Group>
-                                <Form.Label>Descreva o mais detalhamente possível, o comportamento do seu chatbot</Form.Label>
+                                <Form.Label>Descreva o mais detalhamente possível, o comportamento do seu whatsapp</Form.Label>
                                 <Field
                                     as="textarea"
                                     name="behavior"
@@ -90,8 +90,8 @@ export default function ChatbotForm({
                         <Row className="mt-2">
                             <Form.Group>
                                 <Button type="submit" color="primary" disabled={isSubmitting}>
-                                    {!chatbot
-                                        ? 'Criar Chatbot'
+                                    {!whatsapp
+                                        ? 'Criar Whatsapp'
                                         : 'Salvar alterações'
                                     }
                                 </Button>
