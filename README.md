@@ -25,12 +25,14 @@ docker compose run -it --rm frontend npm install
 ```
 
 #### Rodar as migrations
-1. Para conseguir rodar as migrations o typescript precisa ser compilado para JS
+Os comandos devem ser executados dentro do container.
+
+(Provisório (?)) O arquivo [backend/typeorm.config.ts](https://github.com/eduNsantos/assistant/blob/master/backend/typeorm.config.ts#L18-L21) tem a entity e migrations.
+Para conseguir rodar as migrations precisa estar configurado para .js. Com ele configurado em JS rode:
+
 ```
 npx tsc
 ```
-(Provisório (?)) O arquivo [backend/typeorm.config.ts](https://github.com/eduNsantos/assistant/blob/master/backend/typeorm.config.ts#L18-L21) tem a entity e migrations, para conseguir rodar as migrations precisa estar configurado para .js, depois altere novamente para .ts.
-Então altere para .js, rode o comando acima (`npx tsc`), rode as migrations:
 ```
 npx typeorm migration:run
 ```
